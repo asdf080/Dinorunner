@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style></style>
+  </head>
+  <body>
+    <canvas id="canvas"> </canvas>
+    <script>
+      var canvas = document.querySelector("#canvas");
+      var ctx = canvas.getContext("2d");
+
+      canvas.width = window.innerWidth - 100;
+      canvas.height = window.innerHeight - 100;
+
+      // 공룡 만들기
+      var dino = {
+        x: 10,
+        y: 200,
+        width: 25,
+        height: 50,
+        draw() {
+          ctx.fillStyle = "green";
+          ctx.fillRect(this.x, this.y, this.width, this.height);
+        },
+      };
+      dino.draw();
+
+      // 장애물 만들기
+      class Cactus {
+        constructor() {
+          this.x = 500;
+          this.y = 200;
+          this.width = 25;
+          this.height = 50;
+        }
+        draw() {
+          ctx.fillStyle = "red";
+          ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+      }
+
+      var timer = 0;
+      var cactus배열 = [];
+      var 점프timer = 0;
+      var ani;
+
+      function 프레임마다실행코드() {
+        ani = requestAnimationFrame(프레임마다실행코드);
+        timer++;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 120프레임 마다(2초당) 한번씩 코드를 실행
+        if (timer % 120 === 0) {
+          var cactus = new Cactus();
+          // 2초마다 장애물을 배열에 넣음
+          cactus배열.push(cactus);
+        }
+        cactus배열.forEach((a, i, o) => {
+          // x 좌표가 0 미만인 장애물 제거
+          if (a.x < 0) {
+            o.splice(i, 1);
+          }
+          a.x -= 2;
+
+          충돌확인(dino, a);
+
+          a.draw();
+        });
+
+        if (점프중) {
+          dino.y -= 5;
+          점프timer++;
+        } else {
+          if (dino.y < 200) {
+            dino.y += 3;
+          }
+        }
+        if (점프timer > 20) {
+          점프중 = false;
+          점프timer = 0;
+        }
+
+        dino.draw();
+      }
+      프레임마다실행코드();
+
+      // 충돌확인
+      function 충돌확인(dino, cactus) {
+        var x축차이 = cactus.x - (dino.x + dino.width);
+        var y축차이 = cactus.y - (dino.y + dino.height);
+        if (x축차이 < 0 && y축차이 < 0) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          cancelAnimationFrame(ani);
+        }
+      }
+
+      var 점프중 = false;
+      document.addEventListener("keydown", function (e) {
+        if (e.code === "Space") {
+          점프중 = true;
+        }
+      });
+    </script>
+  </body>
+</html>
