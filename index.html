@@ -3,17 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style></style>
+    <title>공룡</title>
+    <style>
+      section{
+        display: grid;
+      }
+      #backGround {
+        grid-area: 1 / 1 / 2 / 2;
+      }
+
+      #canvas {
+        z-index: 1;
+        grid-area: 1 / 1 / 2 / 2;
+      }
+    </style>
   </head>
   <body>
-    <canvas id="canvas"> </canvas>
+    <section>
+      <canvas id="backGround"></canvas>
+      <canvas id="canvas"> </canvas>
+      <p>PRESS ENTER TO START</p>
+    </section>
     <script>
       var canvas = document.querySelector("#canvas");
       var ctx = canvas.getContext("2d");
+      var bgCanvas = document.querySelector('#backGround');
+      var bgCtx = bgCanvas.getContext('2d');
 
       canvas.width = window.innerWidth - 100;
-      canvas.height = window.innerHeight - 100;
+      canvas.height = window.innerHeight - 500
+
+      bgCanvas.width = window.innerWidth - 100;
+      bgCanvas.height = window.innerHeight - 500
 
       // 공룡 만들기
       var dino = {
@@ -31,8 +52,8 @@
       // 장애물 만들기
       class Cactus {
         constructor() {
-          this.width = 50 + getRandomInt(-5, 6);
-          this.height = 50 + getRandomInt(-5, 6);
+          this.width = 20 + 랜덤숫자함수(-5, 6);
+          this.height = 40 + 랜덤숫자함수(-5, 6);
           this.x = 500;
           this.y = 250 - this.height;
         }
@@ -42,14 +63,30 @@
         }
       }
 
+      function 랜덤숫자함수(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
+      }
+
       var timer = 0;
       var cactus배열 = [];
       var 점프timer = 0;
       var ani;
 
+      draw바닥선(bgCtx);
+
+      function draw바닥선(ctx) {
+        ctx.beginPath();
+        ctx.moveTo(0, 240);
+        ctx.lineTo(600, 240);
+        ctx.stroke();
+      }
+
       function 프레임마다실행코드() {
         ani = requestAnimationFrame(프레임마다실행코드);
         timer++;
+        // 장애물 잔상 삭제
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // 120프레임 마다(2초당) 한번씩 코드를 실행
@@ -63,43 +100,39 @@
           if (a.x < 0) {
             o.splice(i, 1);
           }
-          a.x -= 2;
 
+          a.x -= 2; // 장애물 속도 조절
           충돌확인(dino, a);
-
-          a.draw();
+          a.draw(); // 장애물 그리기
         });
 
         if (점프중) {
-          dino.y -= 5;
+          dino.y -= 6;
           점프timer++;
         } else {
           if (dino.y < 200) {
             dino.y += 3;
           }
         }
-        if (점프timer > 20) {
+        if (점프timer > 21) {
           점프중 = false;
           점프timer = 0;
         }
-
-        draw바닥선()
         dino.draw();
       }
-      프레임마다실행코드();
 
-      function draw바닥선(){
-        ctx.beginPath();
-        ctx.moveTo(0, 250);
-        ctx.lineTo(600, 250);
-        ctx.stroke();
+      // 스페이스 입력시 게임 시작
+      document.addEventListener("keydown", (e) => {
+        if (e.code == "Enter") {
+          프레임마다실행코드();
         }
+      });
 
       // 충돌확인
       function 충돌확인(dino, cactus) {
         var x축차이 = cactus.x - (dino.x + dino.width);
         var y축차이 = cactus.y - (dino.y + dino.height);
-        if (x축차이 < 0 && y축차이 < 0) {
+        if (x축차이 < 0 && y축차이 < 0) { // 충돌감지
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           cancelAnimationFrame(ani);
         }
