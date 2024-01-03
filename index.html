@@ -31,10 +31,10 @@
       // 장애물 만들기
       class Cactus {
         constructor() {
+          this.width = 50 + getRandomInt(-5, 6);
+          this.height = 50 + getRandomInt(-5, 6);
           this.x = 500;
-          this.y = 200;
-          this.width = 25;
-          this.height = 50;
+          this.y = 250 - this.height;
         }
         draw() {
           ctx.fillStyle = "red";
@@ -83,9 +83,17 @@
           점프timer = 0;
         }
 
+        draw바닥선()
         dino.draw();
       }
       프레임마다실행코드();
+
+      function draw바닥선(){
+        ctx.beginPath();
+        ctx.moveTo(0, 250);
+        ctx.lineTo(600, 250);
+        ctx.stroke();
+        }
 
       // 충돌확인
       function 충돌확인(dino, cactus) {
