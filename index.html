@@ -77,6 +77,7 @@
       var 점프timer = 0;
       var ani;
       var 점수 = 0;
+      var 랜덤숫자 = Math.floor(Math.random() * 5) * 5 + 50;
 
       draw바닥선(bgCtx);
 
@@ -98,10 +99,9 @@
           document.querySelector("#score").innerHTML = 점수;
         }
 
-        // 120프레임 마다(2초당) 한번씩 코드를 실행
-        if (timer % 120 === 0) {
+        // 특정 프레임마다 장애물 생성
+        if (timer % 랜덤숫자 === 0) {
           var cactus = new Cactus();
-          // 2초마다 장애물을 배열에 넣음
           cactus배열.push(cactus);
         }
         cactus배열.forEach((a, i, o) => {
@@ -110,7 +110,9 @@
             o.splice(i, 1);
           }
 
-          a.x -= 2; // 장애물 속도 조절
+          if (timer > 899) a.x -= 9;
+          else if (timer > 499) a.x -= 8;
+          else a.x -= 6; // 장애물 속도 조절
           충돌확인(dino, a);
           a.draw(); // 장애물 그리기
         });
@@ -123,14 +125,14 @@
             dino.y += 3;
           }
         }
-        if (점프timer > 21) {
+        if (점프timer > 19) {
           점프중 = false;
           점프timer = 0;
         }
         dino.draw();
       }
 
-      // 스페이스 입력시 게임 시작
+      // 키 입력시 게임 시작
       document.addEventListener("keydown", (e) => {
         if (e.code == "Enter") {
           프레임마다실행코드();
@@ -149,11 +151,25 @@
       }
 
       var 점프중 = false;
+      var lastSpace = 0;
       document.addEventListener("keydown", function (e) {
-        if (e.code === "Space") {
-          점프중 = true;
+        if (e.key === " ") {
+          const currentTime = Date.now();
+          const timeSinceLastPress = currentTime - lastSpace;
+
+          if (timeSinceLastPress > 900) {
+            점프중 = true;
+            lastSpace = currentTime;
+            console.log(lastSpace);
+            console.log(timeSinceLastPress);
+          }
         }
       });
+      // document.addEventListener("keydown", function (e) {
+      //   if (e.code === "Space") {
+      //     점프중 = true;
+      //   }
+      // });
     </script>
   </body>
 </html>
