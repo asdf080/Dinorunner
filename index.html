@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>공룡</title>
     <style>
-      section{
+      section {
         display: grid;
       }
+
       #backGround {
         grid-area: 1 / 1 / 2 / 2;
       }
@@ -19,6 +20,7 @@
     </style>
   </head>
   <body>
+    <span id="score">0</span>
     <section>
       <canvas id="backGround"></canvas>
       <canvas id="canvas"> </canvas>
@@ -27,14 +29,14 @@
     <script>
       var canvas = document.querySelector("#canvas");
       var ctx = canvas.getContext("2d");
-      var bgCanvas = document.querySelector('#backGround');
-      var bgCtx = bgCanvas.getContext('2d');
+      var bgCanvas = document.querySelector("#backGround");
+      var bgCtx = bgCanvas.getContext("2d");
 
       canvas.width = window.innerWidth - 100;
-      canvas.height = window.innerHeight - 500
+      canvas.height = window.innerHeight - 500;
 
       bgCanvas.width = window.innerWidth - 100;
-      bgCanvas.height = window.innerHeight - 500
+      bgCanvas.height = window.innerHeight - 500;
 
       // 공룡 만들기
       var dino = {
@@ -73,6 +75,7 @@
       var cactus배열 = [];
       var 점프timer = 0;
       var ani;
+      var 점수 = 0;
 
       draw바닥선(bgCtx);
 
@@ -88,6 +91,11 @@
         timer++;
         // 장애물 잔상 삭제
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (timer % 10 === 0) {
+          점수++;
+          document.querySelector("#score").innerHTML = 점수;
+        }
 
         // 120프레임 마다(2초당) 한번씩 코드를 실행
         if (timer % 120 === 0) {
@@ -132,7 +140,8 @@
       function 충돌확인(dino, cactus) {
         var x축차이 = cactus.x - (dino.x + dino.width);
         var y축차이 = cactus.y - (dino.y + dino.height);
-        if (x축차이 < 0 && y축차이 < 0) { // 충돌감지
+        if (x축차이 < 0 && y축차이 < 0) {
+          // 충돌감지
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           cancelAnimationFrame(ani);
         }
