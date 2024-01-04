@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>공룡</title>
     <style>
+      * {
+        font-family: "Ramche";
+      }
+      article {
+        width: 690px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      nav {
+        align-self: flex-end;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        font-size: 18px;
+        font-weight: bold;
+      }
       section {
         display: grid;
         background-color: lightgray;
@@ -20,16 +37,66 @@
       #canvas {
         z-index: 1;
       }
+      main {
+        position: relative;
+      }
+      div {
+        position: absolute;
+        width: 690px;
+        height: 300px;
+        background-color: rgba(255, 255, 255, 0.5);
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      div p {
+        font-size: 20px;
+      }
+
+      #end_pop {
+        opacity: 0;
+        z-index: 10;
+      }
+
+      #end_pop button {
+        padding: 10px;
+        font-size: 20px;
+        cursor: pointer;
+      }
+
+      @font-face {
+        font-family: "Ramche";
+        src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/Ramche.woff2")
+          format("woff2");
+        font-weight: normal;
+        font-style: normal;
+      }
     </style>
   </head>
   <body>
-    <span id="scoreTit">SCORE</span>
-    <span id="score">0</span>
-    <section>
-      <canvas id="backGround"></canvas>
-      <canvas id="canvas"> </canvas>
-    </section>
-    <p>PRESS ENTER TO START</p>
+    <article>
+      <nav>
+        <span id="scoreTit">SCORE</span>
+        <span id="score">0</span>
+      </nav>
+      <main>
+        <section>
+          <canvas id="backGround"></canvas>
+          <canvas id="canvas"> </canvas>
+        </section>
+        <div id="start_pop">
+          <h1>PRESS ENTER TO START</h1>
+          <p>엔터키를 눌러 시작하세요</p>
+        </div>
+        <div id="end_pop">
+          <h1>GAME OVER</h1>
+          <button onclick="reStart()">다시 시작</button>
+        </div>
+      </main>
+    </article>
     <script>
       var canvas = document.querySelector("#canvas");
       var ctx = canvas.getContext("2d");
@@ -42,15 +109,30 @@
       bgCanvas.width = window.innerWidth - 100;
       bgCanvas.height = window.innerHeight - 600;
 
+      var doveImgs = [new Image(), new Image()];
+      doveImgs[0].src = "./dove2.png";
+      doveImgs[1].src = "./dove3.png";
+      var doveNum = 0;
+
+      var plantImg = new Image();
+      plantImg.src = "plant.png";
+
       // 공룡 만들기
       var dino = {
         x: 10,
         y: 200,
-        width: 25,
+        width: 50,
         height: 50,
         draw() {
           ctx.fillStyle = "green";
-          ctx.fillRect(this.x, this.y, this.width, this.height);
+          // ctx.fillRect(this.x, this.y, this.width, this.height);
+          ctx.drawImage(
+            doveImgs[doveNum],
+            this.x,
+            this.y,
+            this.width,
+            this.height
+          );
         },
       };
       dino.draw();
@@ -58,14 +140,15 @@
       // 장애물 만들기
       class Cactus {
         constructor() {
-          this.width = 20 + 랜덤숫자함수(-5, 6);
+          this.width = 40 + 랜덤숫자함수(-5, 6);
           this.height = 40 + 랜덤숫자함수(-5, 6);
           this.x = 500;
           this.y = 250 - this.height;
         }
         draw() {
           ctx.fillStyle = "red";
-          ctx.fillRect(this.x, this.y, this.width, this.height);
+          // ctx.fillRect(this.x, this.y, this.width, this.height);
+          ctx.drawImage(plantImg, this.x, this.y, this.width, this.height);
         }
       }
 
@@ -80,7 +163,7 @@
       var 점프timer = 0;
       var ani;
       var 점수 = 0;
-      var 랜덤숫자 = Math.floor(Math.random() * 5) * 5 + 50;
+      var 랜덤숫자 = Math.floor(Math.random() * 5) * 3 + 50;
 
       draw바닥선(bgCtx);
 
@@ -94,6 +177,12 @@
       function 프레임마다실행코드() {
         ani = requestAnimationFrame(프레임마다실행코드);
         timer++;
+
+        // 공룡 이미지 전환
+        if (timer % 10 == 0) {
+          doveNum = (doveNum + 1) % 2;
+        }
+
         // 장애물 잔상 삭제
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -113,7 +202,8 @@
             o.splice(i, 1);
           }
 
-          if (timer > 899) a.x -= 9;
+          if (timer > 1199) a.x -= 10;
+          else if (timer > 899) a.x -= 9;
           else if (timer > 499) a.x -= 8;
           else a.x -= 6; // 장애물 속도 조절
           충돌확인(dino, a);
@@ -125,7 +215,7 @@
           점프timer++;
         } else {
           if (dino.y < 200) {
-            dino.y += 3;
+            dino.y += 5;
           }
         }
         if (점프timer > 19) {
@@ -139,6 +229,7 @@
       document.addEventListener("keydown", (e) => {
         if (e.code == "Enter") {
           프레임마다실행코드();
+          document.querySelector("#start_pop").style.display = "none";
         }
       });
 
@@ -150,6 +241,7 @@
           // 충돌감지
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           cancelAnimationFrame(ani);
+          document.querySelector("#end_pop").style.opacity = 1;
         }
       }
 
@@ -159,6 +251,10 @@
           점프중 = true;
         }
       });
+      // 재시작
+      function reStart() {
+        window.location.reload();
+      }
     </script>
   </body>
 </html>
