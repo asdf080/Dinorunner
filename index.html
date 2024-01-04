@@ -154,25 +154,11 @@
       }
 
       var 점프중 = false;
-      var lastSpace = 0;
       document.addEventListener("keydown", function (e) {
-        if (e.key === " ") {
-          const currentTime = Date.now();
-          const timeSinceLastPress = currentTime - lastSpace;
-
-          if (timeSinceLastPress > 900) {
-            점프중 = true;
-            lastSpace = currentTime;
-            console.log(lastSpace);
-            console.log(timeSinceLastPress);
-          }
+        if (e.code === "Space" && dino.y == 200) {
+          점프중 = true;
         }
       });
-      // document.addEventListener("keydown", function (e) {
-      //   if (e.code === "Space") {
-      //     점프중 = true;
-      //   }
-      // });
     </script>
   </body>
 </html>
