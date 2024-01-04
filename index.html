@@ -116,15 +116,12 @@
         // 공룡 이미지 전환
         if (timer % 10 == 0) {
           doveNum = (doveNum + 1) % 2;
+          점수++;
+          document.querySelector("#score").innerHTML = 점수;
         }
 
         // 장애물 잔상 삭제
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        if (timer % 10 === 0) {
-          점수++;
-          document.querySelector("#score").innerHTML = 점수;
-        }
 
         // 특정 프레임마다 장애물 생성
         if (timer % 랜덤숫자 === 0) {
@@ -160,6 +157,13 @@
         dino.draw();
       }
 
+      var 점프중 = false;
+      document.addEventListener("keydown", function (e) {
+        if (e.code === "Space" && dino.y == 200) {
+          점프중 = true;
+        }
+      });
+
       // 키 입력시 게임 시작
       document.addEventListener("keydown", (e) => {
         if (e.code == "Enter") {
@@ -180,12 +184,6 @@
         }
       }
 
-      var 점프중 = false;
-      document.addEventListener("keydown", function (e) {
-        if (e.code === "Space" && dino.y == 200) {
-          점프중 = true;
-        }
-      });
       // 재시작
       function reStart() {
         window.location.reload();
