@@ -1,6 +1,11 @@
 * {
   font-family: "Ramche";
 }
+
+body {
+  overflow: unset;
+}
+
 article {
   width: 690px;
   margin: 0 auto;
