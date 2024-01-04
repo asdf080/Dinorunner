@@ -1,0 +1,73 @@
+* {
+  font-family: "Ramche";
+}
+article {
+  width: 690px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+nav {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  width: 100%;
+  height: 30px;
+  justify-content: space-between;
+  align-items: center;
+}
+section {
+  display: grid;
+  background-color: lightgray;
+  width: 650px;
+  height: 300px;
+  padding-left: 40px;
+}
+
+canvas {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+#canvas {
+  z-index: 1;
+}
+main {
+  position: relative;
+}
+div {
+  position: absolute;
+  width: 690px;
+  height: 300px;
+  background-color: rgba(255, 255, 255, 0.5);
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+div p {
+  font-size: 20px;
+}
+
+#end_pop {
+  opacity: 0;
+  z-index: 10;
+}
+
+#end_pop button {
+  padding: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+@font-face {
+  font-family: "Ramche";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/Ramche.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}

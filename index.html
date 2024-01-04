@@ -3,84 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>공룡</title>
-    <style>
-      * {
-        font-family: "Ramche";
-      }
-      article {
-        width: 690px;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-      nav {
-        align-self: flex-end;
-        margin-top: 10px;
-        margin-bottom: 20px;
-        font-size: 18px;
-        font-weight: bold;
-      }
-      section {
-        display: grid;
-        background-color: lightgray;
-        width: 650px;
-        height: 300px;
-        padding-left: 40px;
-      }
-
-      canvas {
-        grid-area: 1 / 1 / 2 / 2;
-      }
-
-      #canvas {
-        z-index: 1;
-      }
-      main {
-        position: relative;
-      }
-      div {
-        position: absolute;
-        width: 690px;
-        height: 300px;
-        background-color: rgba(255, 255, 255, 0.5);
-        top: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-
-      div p {
-        font-size: 20px;
-      }
-
-      #end_pop {
-        opacity: 0;
-        z-index: 10;
-      }
-
-      #end_pop button {
-        padding: 10px;
-        font-size: 20px;
-        cursor: pointer;
-      }
-
-      @font-face {
-        font-family: "Ramche";
-        src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/Ramche.woff2")
-          format("woff2");
-        font-weight: normal;
-        font-style: normal;
-      }
-    </style>
+    <link rel="icon" href="img/plant.png" />
+    <link rel="stylesheet" href="style.css" />
+    <title>JUMPING DUCK</title>
   </head>
   <body>
     <article>
       <nav>
-        <span id="scoreTit">SCORE</span>
-        <span id="score">0</span>
+        <h1>JUMPING DUCK</h1>
+        <span>
+          <span id="scoreTit">SCORE</span>
+          <span id="score">0</span>
+        </span>
       </nav>
       <main>
         <section>
@@ -92,7 +26,7 @@
           <p>엔터키를 눌러 시작하세요</p>
         </div>
         <div id="end_pop">
-          <img src="doveX.png" alt="" />
+          <img src="img/doveX.png" />
           <h1>GAME OVER</h1>
           <button onclick="reStart()">다시 시작</button>
         </div>
@@ -111,12 +45,12 @@
       bgCanvas.height = window.innerHeight - 600;
 
       var doveImgs = [new Image(), new Image()];
-      doveImgs[0].src = "./dove2.png";
-      doveImgs[1].src = "./dove3.png";
+      doveImgs[0].src = "img/dove2.png";
+      doveImgs[1].src = "img/dove3.png";
       var doveNum = 0;
 
       var plantImg = new Image();
-      plantImg.src = "plant.png";
+      plantImg.src = "img/plant.png";
 
       // 공룡 만들기
       var dino = {
