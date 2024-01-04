@@ -3,7 +3,7 @@
 }
 
 body {
-  overflow: unset;
+  overflow-x: hidden;
 }
 
 article {
