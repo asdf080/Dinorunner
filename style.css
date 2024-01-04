@@ -34,6 +34,7 @@ section {
 
 canvas {
   grid-area: 1 / 1 / 2 / 2;
+  max-width: 100vw;
 }
 
 #canvas {
@@ -56,6 +57,10 @@ div {
 
 div p {
   font-size: 20px;
+}
+
+#start_pop {
+  z-index: 10;
 }
 
 #end_pop {
