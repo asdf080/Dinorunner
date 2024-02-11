@@ -13,6 +13,9 @@ https://asdf080.github.io/JUMPING-DUCK/
 - HTML
 - CSS
 - JavaScript
+  
+### 🎈주요 기능
+- canvas 태그와 requestAnimationFrame 함수를 이용한 이미지 생성 및 애니메이션 효과
 
 ### ✔ 미리보기
 ![preview](./img/preview1.png)
